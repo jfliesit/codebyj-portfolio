@@ -1,6 +1,5 @@
 export default {
   async fetch(request, env) {
-    // Serve the portfolio HTML
     const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -8,225 +7,62 @@ export default {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CodeByJ - App Portfolio</title>
-  <meta name="description" content="CodeByJ portfolio showcasing innovative health tech apps, including MyPepDoc">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { 
-      color-scheme: light dark;
-    }
-    body { 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      background: #ffffff;
-      color: #1a1a1a;
-      line-height: 1.6;
-    }
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: #1a1a1a;
-        color: #ffffff;
-      }
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #ffffff; color: #1a1a1a; }
+    @media (prefers-color-scheme: dark) { body { background: #1a1a1a; color: #ffffff; } }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-    h1 { font-size: 3.5rem; font-weight: 500; margin-bottom: 1rem; letter-spacing: -0.02em; }
+    h1 { font-size: 3.5rem; font-weight: 500; margin-bottom: 1rem; }
     h2 { font-size: 2rem; font-weight: 500; margin-bottom: 3rem; }
-    h3 { font-size: 1.75rem; font-weight: 500; margin-bottom: 0.5rem; }
+    h3 { font-size: 1.75rem; font-weight: 500; }
     h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 1rem; }
-    
-    header { padding: 4rem 1.5rem 5rem; text-align: center; border-bottom: 1px solid #e0e0e0; }
-    @media (prefers-color-scheme: dark) {
-      header { border-color: #333; }
-    }
-    
-    .subtitle { font-size: 1.25rem; color: #666; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
-    @media (prefers-color-scheme: dark) {
-      .subtitle { color: #aaa; }
-    }
-    
-    .cta-button { 
-      display: inline-block; 
-      padding: 0.75rem 1.5rem; 
-      background: #1a1a1a; 
-      color: #fff;
-      border-radius: 12px; 
-      text-decoration: none; 
-      font-weight: 500; 
-      cursor: pointer;
-      border: none;
-    }
-    @media (prefers-color-scheme: dark) {
-      .cta-button { background: #fff; color: #1a1a1a; }
-    }
-    
+    header { padding: 4rem 1.5rem; text-align: center; border-bottom: 1px solid #e0e0e0; }
+    @media (prefers-color-scheme: dark) { header { border-color: #333; } }
+    .logo { max-width: 300px; margin-bottom: 2rem; }
+    .subtitle { font-size: 1.25rem; color: #666; margin-bottom: 2rem; }
+    @media (prefers-color-scheme: dark) { .subtitle { color: #aaa; } }
+    .cta-button { display: inline-block; padding: 0.75rem 1.5rem; background: #FF6B35; color: #fff; border-radius: 12px; text-decoration: none; font-weight: 500; border: none; cursor: pointer; }
+    .cta-button:hover { background: #e55a2a; }
     #apps { padding: 4rem 1.5rem; }
-    
-    .app-card { 
-      border: 1px solid #e0e0e0; 
-      border-radius: 12px; 
-      overflow: hidden; 
-      margin-bottom: 2rem;
-    }
-    @media (prefers-color-scheme: dark) {
-      .app-card { border-color: #333; }
-    }
-    
-    .app-header { 
-      padding: 2rem 1.5rem; 
-      background: #f5f5f5;
-      border-bottom: 1px solid #e0e0e0;
-    }
-    @media (prefers-color-scheme: dark) {
-      .app-header { background: #222; border-color: #333; }
-    }
-    
+    .app-card { border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; margin-bottom: 2rem; }
+    @media (prefers-color-scheme: dark) { .app-card { border-color: #333; } }
+    .app-header { padding: 2rem 1.5rem; background: #f5f5f5; border-bottom: 1px solid #e0e0e0; display: flex; gap: 2rem; align-items: flex-start; }
+    @media (prefers-color-scheme: dark) { .app-header { background: #222; border-color: #333; } }
+    .app-icon { flex-shrink: 0; width: 120px; height: 120px; border-radius: 24px; overflow: hidden; border: 2px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .app-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .app-info { flex: 1; }
     .app-header p { color: #666; margin-bottom: 1rem; }
-    @media (prefers-color-scheme: dark) {
-      .app-header p { color: #aaa; }
-    }
-    
-    .screenshots { 
-      padding: 1.5rem; 
-      background: #fafafa;
-      border-bottom: 1px solid #e0e0e0;
-      overflow-x: auto;
-    }
-    @media (prefers-color-scheme: dark) {
-      .screenshots { background: #1a1a1a; border-color: #333; }
-    }
-    
-    .screenshot-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-      gap: 1rem;
-    }
-    
-    .screenshot { 
-      background: #fff; 
-      border-radius: 12px; 
-      overflow: hidden; 
-      border: 1px solid #e0e0e0;
-      height: 200px;
-    }
-    @media (prefers-color-scheme: dark) {
-      .screenshot { background: #222; border-color: #333; }
-    }
-    
+    @media (prefers-color-scheme: dark) { .app-header p { color: #aaa; } }
+    .screenshots { padding: 1.5rem; background: #fafafa; border-bottom: 1px solid #e0e0e0; }
+    @media (prefers-color-scheme: dark) { .screenshots { background: #1a1a1a; border-color: #333; } }
+    .screenshot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+    .screenshot { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e0e0e0; height: 200px; }
+    @media (prefers-color-scheme: dark) { .screenshot { background: #222; border-color: #333; } }
     .screenshot img { width: 100%; height: 100%; object-fit: cover; }
-    
     .features { padding: 2rem 1.5rem; }
-    .feature-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-      gap: 1rem;
-    }
-    
-    .feature { 
-      display: flex; 
-      gap: 0.75rem; 
-      padding: 0.75rem; 
-      background: #fafafa;
-      border-radius: 8px;
-    }
-    @media (prefers-color-scheme: dark) {
-      .feature { background: #222; }
-    }
-    
-    .feature-check { font-size: 1.2rem; flex-shrink: 0; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .feature { display: flex; gap: 0.75rem; padding: 0.75rem; background: #fafafa; border-radius: 8px; }
+    @media (prefers-color-scheme: dark) { .feature { background: #222; } }
+    .feature-check { font-size: 1.2rem; flex-shrink: 0; color: #FF6B35; }
     .feature span { font-size: 0.95rem; }
-    
-    .pricing { 
-      padding: 2rem 1.5rem; 
-      border-top: 1px solid #e0e0e0;
-      background: #fafafa;
-    }
-    @media (prefers-color-scheme: dark) {
-      .pricing { border-color: #333; background: #1a1a1a; }
-    }
-    
-    .pricing-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-      gap: 1rem;
-    }
-    
-    .pricing-tier { 
-      padding: 1rem; 
-      background: #fff; 
-      border-radius: 12px; 
-      border: 1px solid #e0e0e0;
-      text-align: center;
-    }
-    @media (prefers-color-scheme: dark) {
-      .pricing-tier { background: #222; border-color: #333; }
-    }
-    
-    .pricing-tier div { margin-bottom: 0.5rem; }
-    .pricing-price { font-size: 1.5rem; font-weight: 500; }
-    .pricing-desc { font-size: 0.9rem; color: #666; }
-    @media (prefers-color-scheme: dark) {
-      .pricing-desc { color: #aaa; }
-    }
-    
-    .cta-section { 
-      padding: 2rem 1.5rem; 
-      border-top: 1px solid #e0e0e0;
-      display: flex; 
-      gap: 1rem; 
-      flex-wrap: wrap; 
-      justify-content: center;
-    }
-    @media (prefers-color-scheme: dark) {
-      .cta-section { border-color: #333; }
-    }
-    
-    .status-badge { 
-      display: inline-block; 
-      padding: 0.5rem 1rem; 
-      background: #fafafa;
-      border-radius: 8px; 
-      font-size: 0.9rem; 
-      color: #666;
-    }
-    @media (prefers-color-scheme: dark) {
-      .status-badge { background: #222; color: #aaa; }
-    }
-    
-    footer { 
-      padding: 3rem 1.5rem; 
-      border-top: 1px solid #e0e0e0;
-      text-align: center; 
-      background: #fafafa;
-    }
-    @media (prefers-color-scheme: dark) {
-      footer { border-color: #333; background: #1a1a1a; }
-    }
-    
+    .cta-section { padding: 2rem 1.5rem; border-top: 1px solid #e0e0e0; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    @media (prefers-color-scheme: dark) { .cta-section { border-color: #333; } }
+    .status-badge { display: inline-block; padding: 0.5rem 1rem; background: #fafafa; border-radius: 8px; font-size: 0.9rem; color: #666; }
+    @media (prefers-color-scheme: dark) { .status-badge { background: #222; color: #aaa; } }
+    footer { padding: 3rem 1.5rem; border-top: 1px solid #e0e0e0; text-align: center; background: #fafafa; }
+    @media (prefers-color-scheme: dark) { footer { border-color: #333; background: #1a1a1a; } }
     footer p { color: #666; margin-bottom: 1.5rem; }
-    @media (prefers-color-scheme: dark) {
-      footer p { color: #aaa; }
-    }
-    
-    .footer-links { 
-      display: flex; 
-      gap: 2rem; 
-      justify-content: center; 
-      flex-wrap: wrap; 
-      font-size: 0.95rem;
-    }
-    
-    .footer-links a { 
-      color: #666; 
-      text-decoration: none;
-    }
-    @media (prefers-color-scheme: dark) {
-      .footer-links a { color: #aaa; }
-    }
-    
+    @media (prefers-color-scheme: dark) { footer p { color: #aaa; } }
+    .footer-links { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; font-size: 0.95rem; }
+    .footer-links a { color: #666; text-decoration: none; }
+    @media (prefers-color-scheme: dark) { .footer-links a { color: #aaa; } }
     .footer-links a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <header>
     <div class="container">
+      <img src="/codebyj_logo.png" alt="CodeByJ" class="logo">
       <h1>CodeByJ</h1>
       <p class="subtitle">Innovative health tech apps designed to empower your wellness journey</p>
       <a href="#apps" class="cta-button">Explore Apps</a>
@@ -238,9 +74,14 @@ export default {
 
     <div class="app-card">
       <div class="app-header">
-        <h3>MyPepDoc</h3>
-        <p><strong>Your personal peptide tracking app with AI doctors</strong></p>
-        <p>Choose Dr. Lexi or Dr. Rax as your guide. They know your peptide, your dose, your schedule, and your cycle day.</p>
+        <div class="app-icon">
+          <img src="/AppIcon.png" alt="MyPepDoc" />
+        </div>
+        <div class="app-info">
+          <h3>MyPepDoc</h3>
+          <p><strong>Your personal peptide tracking app with AI doctors</strong></p>
+          <p>Choose Dr. Lexi or Dr. Rax as your guide. They know your peptide, your dose, your schedule, and your cycle day.</p>
+        </div>
       </div>
 
       <div class="screenshots">
@@ -292,31 +133,9 @@ export default {
         </ul>
       </div>
 
-      <div class="pricing">
-        <h4>Pricing</h4>
-        <div class="pricing-grid">
-          <div class="pricing-tier">
-            <div style="font-weight: 500;">Free</div>
-            <div class="pricing-price">$0</div>
-            <div class="pricing-desc">10 AI messages/month</div>
-          </div>
-          <div class="pricing-tier">
-            <div style="font-weight: 500;">Monthly</div>
-            <div class="pricing-price">$6.99</div>
-            <div class="pricing-desc">Unlimited features</div>
-          </div>
-          <div class="pricing-tier">
-            <div style="font-weight: 500;">Annual</div>
-            <div class="pricing-price">$39.99</div>
-            <div class="pricing-desc">Save 52% vs monthly</div>
-          </div>
-        </div>
-      </div>
-
       <div class="cta-section">
         <span class="status-badge">Status: In Review</span>
-        <button class="cta-button" onclick="alert('App Store link coming soon!')">Download on App Store</button>
-        <button class="cta-button" onclick="alert('Google Play link coming soon!')">Download on Google Play</button>
+        <button class="cta-button" onclick="window.open('https://apps.apple.com', '_blank')">Download on App Store</button>
       </div>
     </div>
   </section>
@@ -334,12 +153,6 @@ export default {
 </body>
 </html>
     `;
-
-    return new Response(html, {
-      headers: {
-        'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600',
-      },
-    });
-  },
+    return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=0' } });
+  }
 };
