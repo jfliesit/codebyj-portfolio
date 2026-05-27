@@ -1,17 +1,7 @@
 name = "codebyj-portfolio"
-type = "javascript"
-account_id = ""
-workers_dev = true
-route = ""
-zone_id = ""
-
+main = "worker.js"
 compatibility_date = "2024-06-20"
-compatibility_flags = ["nodejs_compat"]
 
-build = { command = "npm run build", watch_paths = ["src/**/*.js", "src/**/*.jsx"] }
-
-[env.production]
-name = "codebyj-portfolio-prod"
 routes = [
   { pattern = "codebyj.com/*", zone_name = "codebyj.com" }
 ]
