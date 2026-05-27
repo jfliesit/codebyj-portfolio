@@ -17,8 +17,8 @@ export default {
     h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 1rem; }
     header { padding: 4rem 1.5rem; text-align: center; border-bottom: 1px solid #e0e0e0; }
     @media (prefers-color-scheme: dark) { header { border-color: #333; } }
-    .logo { max-width: 300px; margin-bottom: 2rem; }
-    .subtitle { font-size: 1.25rem; color: #666; margin-bottom: 2rem; }
+    .logo { max-width: 400px; margin: 0 auto 2rem; display: block; }
+    .subtitle { font-size: 1.25rem; color: #666; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
     @media (prefers-color-scheme: dark) { .subtitle { color: #aaa; } }
     .cta-button { display: inline-block; padding: 0.75rem 1.5rem; background: #FF6B35; color: #fff; border-radius: 12px; text-decoration: none; font-weight: 500; border: none; cursor: pointer; }
     .cta-button:hover { background: #e55a2a; }
@@ -62,8 +62,7 @@ export default {
   <header>
     <div class="container">
       <img src="https://raw.githubusercontent.com/jfliesit/codebyj-portfolio/main/codebyj_logo.png" alt="CodeByJ" class="logo">
-      <h1>CodeByJ</h1>
-      <p class="subtitle">Innovative health tech apps designed to empower your wellness journey</p>
+      <p class="subtitle">Creating functional apps, fast</p>
       <a href="#apps" class="cta-button">Explore Apps</a>
     </div>
   </header>
@@ -141,16 +140,3 @@ export default {
 
   <footer>
     <div class="container">
-      <p>&copy; 2026 CodeByJ. All rights reserved.</p>
-      <div class="footer-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Use</a>
-        <a href="#">Contact</a>
-      </div>
-    </div>
-  </footer>
-</body>
-</html>`;
-    return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=0' } });
-  }
-};
