@@ -1,0 +1,19 @@
+{
+  "name": "codebyj-portfolio",
+  "version": "1.0.0",
+  "description": "CodeByJ portfolio website showcasing MyPepDoc",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240620.0",
+    "wrangler": "^3.61.0"
+  }
+}
