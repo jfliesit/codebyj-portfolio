@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeByJ — Creating Functional Apps, Fast</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF6B35;
+      --orange-dark: #e55a24;
+      --navy: #0f1923;
+      --navy-mid: #1a2635;
+      --white: #ffffff;
+      --off-white: #f7f8fa;
+      --text: #1a1a2e;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "DM Sans", -apple-system, sans-serif; background: var(--off-white); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    header { background: #f0f2f5; border-bottom: 1px solid #e2e5ea; position: relative; overflow: hidden; }
+    header::before { content: ""; position: absolute; top: -80px; right: -80px; width: 320px; height: 320px; background: radial-gradient(circle, rgba(255,107,53,0.08) 0%, transparent 70%); pointer-events: none; }
+    .header-inner { max-width: 960px; margin: 0 auto; padding: 1.75rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; position: relative; z-index: 1; }
+    .header-logo { height: 48px; width: auto; flex-shrink: 0; }
+    .header-center { flex: 1; text-align: center; }
+    .header-tagline { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(1.1rem, 2.2vw, 1.45rem); color: var(--navy); font-weight: 400; letter-spacing: -0.01em; }
+    .header-tagline em { font-style: italic; color: var(--orange); }
+    .header-sub { font-size: 0.72rem; color: #9ca3af; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; margin-top: 0.15rem; }
+    .header-actions { display: flex; gap: 0.6rem; flex-shrink: 0; }
+    @media (max-width: 600px) { .header-inner { flex-direction: column; padding: 1.25rem 1.5rem; gap: 0.75rem; } }
+    .btn-ghost { background: white; color: var(--navy); padding: 0.7rem 1.75rem; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: background 0.2s, box-shadow 0.2s; border: 1px solid #d1d5db; cursor: pointer; display: inline-block; }
+    .btn-ghost:hover { background: #f9fafb; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    main { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem 4rem; display: flex; flex-direction: column; gap: 2rem; }
+    .app-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--border); }
+    .app-card-header { display: flex; align-items: center; gap: 1.25rem; padding: 1.75rem 1.75rem 1.5rem; cursor: pointer; user-select: none; }
+    .app-icon { width: 72px; height: 72px; border-radius: 16px; flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,0.12); }
+    .app-meta { flex: 1; min-width: 0; }
+    .app-meta h2 { font-family: "DM Serif Display", serif; font-size: 1.5rem; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 0.2rem; }
+    .app-tagline { color: var(--text-muted); font-size: 0.92rem; margin-bottom: 0.6rem; }
+    .status-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255,107,53,0.1); color: var(--orange); padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid rgba(255,107,53,0.2); }
+    .status-badge::before { content: ""; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .expand-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--off-white); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; color: var(--text-muted); }
+    .expand-btn svg { transition: transform 0.3s ease; }
+    .app-card.expanded .expand-btn svg { transform: rotate(180deg); }
+    .app-card-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .app-card.expanded .app-card-body { max-height: 1200px; }
+    .app-card-body-inner { padding: 1.5rem 1.75rem 1.75rem; border-top: 1px solid var(--border); }
+    .ai-doctors { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; padding: 0.75rem 1rem; background: var(--off-white); border-radius: 8px; border-left: 3px solid var(--orange); }
+    .ai-doctors strong { color: var(--text); }
+    .screenshots-label, .features-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .screenshots { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem; margin-bottom: 1.75rem; }
+    @media (max-width: 600px) { .screenshots { grid-template-columns: repeat(3, 1fr); } }
+    .screenshot { border-radius: 12px; overflow: hidden; aspect-ratio: 9/19.5; background: var(--off-white); box-shadow: 0 2px 12px rgba(0,0,0,0.10); }
+    .screenshot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .features { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.6rem; margin-bottom: 1.75rem; }
+    .feature { background: var(--off-white); padding: 0.65rem 0.85rem; border-radius: 8px; display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 500; border: 1px solid var(--border); }
+    .feature-check { color: var(--orange); font-size: 0.8rem; flex-shrink: 0; }
+    .app-store-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--navy); color: white; padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: background 0.2s, transform 0.15s; }
+    .app-store-btn:hover { background: var(--navy-mid); transform: translateY(-1px); }
+    .contact-section { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); padding: 2.25rem 1.75rem; }
+    .section-eyebrow { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); margin-bottom: 0.4rem; }
+    .section-title { font-family: "DM Serif Display", serif; font-size: 1.6rem; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .section-sub { color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1.75rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .form-group input, .form-group textarea { padding: 0.7rem 0.9rem; border: 1.5px solid var(--border); border-radius: 8px; font-family: "DM Sans", sans-serif; font-size: 0.92rem; color: var(--text); background: var(--off-white); transition: border-color 0.2s, box-shadow 0.2s; outline: none; resize: vertical; }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,107,53,0.1); background: white; }
+    .form-group textarea { min-height: 120px; }
+    .form-submit { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .form-note { font-size: 0.8rem; color: var(--text-muted); }
+    .submit-btn { background: var(--orange); color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; font-family: "DM Sans", sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .submit-btn:hover { background: var(--orange-dark); transform: translateY(-1px); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .form-success { display: none; text-align: center; padding: 2rem; color: #16a34a; font-weight: 500; }
+    footer { background: var(--navy); color: rgba(255,255,255,0.4); text-align: center; padding: 2rem; font-size: 0.85rem; }
+    footer span { color: var(--orange); }
+    @media (prefers-color-scheme: dark) {
+      :root { --off-white: #0d1117; --white: #161b22; --text: #e6edf3; --text-muted: #8b949e; --border: #30363d; --shadow: 0 4px 24px rgba(0,0,0,0.3); }
+      header { background: #e8eaed; border-bottom-color: #d1d5db; }
+      .form-group input, .form-group textarea { background: #0d1117; color: var(--text); }
+      .form-group input:focus, .form-group textarea:focus { background: #161b22; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <img src="/images/codebyj_logo.png" alt="CodeByJ" class="header-logo">
+      <div class="header-center">
+        <p class="header-tagline">Creating functional apps, <em>fast</em></p>
+        <p class="header-sub">iOS Development &amp; App Design</p>
+      </div>
+      <div class="header-actions">
+        <a href="#contact" class="btn-ghost">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="apps">
+      <div class="app-card" id="myPepDocCard">
+        <div class="app-card-header" onclick="toggleCard('myPepDocCard')">
+          <img src="/images/AppIcon.png" alt="MyPepDoc" class="app-icon">
+          <div class="app-meta">
+            <h2>MyPepDoc</h2>
+            <p class="app-tagline">Your personal peptide tracking app with AI doctors</p>
+            <span class="status-badge">In Review</span>
+          </div>
+          <div class="expand-btn" aria-label="Expand">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="app-card-body">
+          <div class="app-card-body-inner">
+            <div class="ai-doctors">
+              <strong>AI Doctors:</strong> Dr. Lexi (Sports Medicine) &amp; Dr. Rax (Performance Medicine)
+            </div>
+            <p class="screenshots-label">App Screenshots</p>
+            <div class="screenshots">
+              <div class="screenshot"><img src="/images/MeetDoc.png" alt="Meet Your Doctor" loading="lazy"></div>
+              <div class="screenshot"><img src="/images/Setup.png" alt="Setup" loading="lazy"></div>
+              <div class="screenshot"><img src="/images/Track.png" alt="Track" loading="lazy"></div>
+              <div class="screenshot"><img src="/images/Library.png" alt="Library" loading="lazy"></div>
+              <div class="screenshot"><img src="/images/AskDoc.png" alt="Ask Your Doctor" loading="lazy"></div>
+              <div class="screenshot"><img src="/images/Calendar.png" alt="Calendar" loading="lazy"></div>
+            </div>
+            <p class="features-label">Features</p>
+            <div class="features">
+              <div class="feature"><span class="feature-check">✓</span> AI Doctor Chat</div>
+              <div class="feature"><span class="feature-check">✓</span> Smart Dose Calculator</div>
+              <div class="feature"><span class="feature-check">✓</span> Blend Support</div>
+              <div class="feature"><span class="feature-check">✓</span> 40+ Peptide Database</div>
+              <div class="feature"><span class="feature-check">✓</span> Protocol Tracking</div>
+              <div class="feature"><span class="feature-check">✓</span> Calendar View</div>
+              <div class="feature"><span class="feature-check">✓</span> Flexible Scheduling</div>
+              <div class="feature"><span class="feature-check">✓</span> Guided Setup</div>
+            </div>
+            <a href="https://apps.apple.com/us/app/mypepdoc/id6738392847" class="app-store-btn" target="_blank">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              View on App Store
+            </a>
+            <p style="margin-top: 1.25rem; font-size: 0.8rem; color: var(--text-muted);">
+              <a href="/mypepdoc/privacy" style="color: var(--orange);">Privacy Policy</a>
+              &nbsp;·&nbsp;
+              <a href="/mypepdoc/terms" style="color: var(--orange);">Terms of Use</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+      <p class="section-eyebrow">Get in Touch</p>
+      <h2 class="section-title">Let's build something great</h2>
+      <p class="section-sub">Have a project in mind or want to learn more? Send me a message and I'll get back to you.</p>
+      <div class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Jason Duncan" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" placeholder="App idea, collaboration, etc.">
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell me about your project or question..." required></textarea>
+        </div>
+        <div class="form-submit">
+          <span class="form-note">🔒 Your email is never exposed publicly</span>
+          <button type="button" class="submit-btn" id="submitBtn" onclick="submitForm()">
+            Send Message
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p style="font-size:1.1rem; font-weight:600; margin-bottom:0.25rem;">Message sent!</p>
+        <p style="color: var(--text-muted); font-size:0.9rem;">Thanks for reaching out — I'll be in touch soon.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 <span>CodeByJ</span>. All rights reserved. &nbsp;·&nbsp; <a href="/mypepdoc/privacy" style="color:#FF6B35;">Privacy Policy</a> &nbsp;·&nbsp; <a href="/mypepdoc/terms" style="color:#FF6B35;">Terms of Use</a></p>
+  </footer>
+
+  <script>
+    function toggleCard(id) {
+      document.getElementById(id).classList.toggle('expanded');
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+    async function submitForm() {
+      const btn = document.getElementById('submitBtn');
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const subject = document.getElementById('subject').value.trim();
+      const message = document.getElementById('message').value.trim();
+      if (!name || !email || !message) { alert('Please fill in your name, email, and message.'); return; }
+      btn.disabled = true; btn.textContent = 'Sending...';
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ access_key: '861dba81-ea76-4c2a-864e-c0d775a30260', name, email, subject: subject || 'New message from CodeByJ.com', message, from_name: 'CodeByJ Contact Form' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('contactForm').style.display = 'none';
+          document.getElementById('formSuccess').style.display = 'block';
+        } else { throw new Error('failed'); }
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerHTML = 'Send Message <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        alert('Something went wrong. Please try again.');
+      }
+    }
+  </script>
+</body>
+</html>
