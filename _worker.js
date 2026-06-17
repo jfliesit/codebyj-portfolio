@@ -1,4 +1,5 @@
 // _worker.js - handles /images/* from R2
+// Updated: pages migration with R2 binding
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -11,7 +12,6 @@ export default {
       headers.set('Cache-Control', 'public, max-age=31536000, immutable');
       return new Response(object.body, { headers });
     }
-    // All other requests served as static files by Pages
     return env.ASSETS.fetch(request);
   }
 };
